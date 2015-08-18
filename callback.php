@@ -13,11 +13,9 @@
 	try{
 		$accessToken = $helper->getAccessToken();
 	}catch(Facebook\Exceptions\FacebookResponseException $e){
-		echo 'O Graph retornou um erro: ' . $e->getMessage();
-		exit;
+		die("O Graph retornou um erro: {$e->getMessage()}";
 	}catch(Facebook\Exceptions\FacebookSDKException $e){
-		echo 'O SDK do Facebook retornou um erro: ' . $e->getMessage();
-		exit;
+		die("O SDK do Facebook retornou um erro: {$e->getMessage()}");
 	}
 
 	if(!isset($accessToken)){
@@ -27,8 +25,7 @@
 			echo "Código do Erro: "    . $helper->getErrorCode()        . "\n";
 			echo "Motivo do Erro: "    . $helper->getErrorReason()      . "\n";
 			echo "Descrição do Erro: " . $helper->getErrorDescription() . "\n";
-		}
-		else{
+		}else{
 			header('HTTP/1.0 400 Bad Request');
 			echo 'Não foi possível gerar os dados corretamente. Requisição Inválida.';
 		}
@@ -44,7 +41,7 @@
 		try{
 			$accessToken = $oAuth2Client->getLongLivedAccessToken($accessToken);
 		} catch (Facebook\Exceptions\FacebookSDKException $e) {
-			echo "Erro ao recuperar o acess token: " . $helper->getMessage();
+			die("Erro ao recuperar o acess token: {$helper->getMessage()}");
 			exit;
 		}
 	}
