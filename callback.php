@@ -17,7 +17,7 @@
 	}catch(Facebook\Exceptions\FacebookSDKException $e){
 		die("O SDK do Facebook retornou um erro: {$e->getMessage()}");
 	}
-	// verifica se existe algum token de acesso
+	// Caso não exista o token de acesso
 	if(!isset($accessToken)){
 		if($helper->getError()) {
 			header('HTTP/1.0 401 Unauthorized');
