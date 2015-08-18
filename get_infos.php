@@ -16,19 +16,16 @@
 		$res = $fb->get('/me?fields=' . join($gets, ',')       , $accessToken);
 		$pic = $fb->get('/me/picture?type=large&redirect=false', $accessToken);
 	} catch(Facebook\Exceptions\FacebookResponseException $e) {
-		echo 'O Graph retornou um erro: ' . $e->getMessage();
-		exit;
-	exit;
+		die("O Graph retornou um erro: {$e->getMessage()})";
 	} catch(Facebook\Exceptions\FacebookSDKException $e) {
-		echo 'O SDK do Facebook retornou um erro: ' . $e->getMessage();
-		exit;
+		die("O SDK do Facebook retornou um erro: {$e->getMessage()}");
 	}
 
 	$gn_res = $res->getGraphNode();
 	$gn_pic = $pic->getGraphNode();
 
 	$date = $gn_res->getProperty('birthday');
-	$date = date_format($date, 'd/m/Y');
+	$date = !empty($date) ? date("d/m/Y", strtotime($date)) : '';
 ?>
 
 <html lang="pt-br">
