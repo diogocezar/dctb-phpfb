@@ -13,26 +13,23 @@
 	try{
 		$accessToken = $helper->getAccessToken();
 	}catch(Facebook\Exceptions\FacebookResponseException $e){
-		echo 'O Graph retornou um erro: ' . $e->getMessage();
-		exit;
+		die("O Graph retornou um erro: {$e->getMessage()}";
 	}catch(Facebook\Exceptions\FacebookSDKException $e){
-		echo 'O SDK do Facebook retornou um erro: ' . $e->getMessage();
-		exit;
+		die("O SDK do Facebook retornou um erro: {$e->getMessage()}");
 	}
-
+	// Caso não exista o token de acesso
 	if(!isset($accessToken)){
 		if($helper->getError()) {
 			header('HTTP/1.0 401 Unauthorized');
-			echo "Erro: "              . $helper->getError()            . "\n";
-			echo "Código do Erro: "    . $helper->getErrorCode()        . "\n";
-			echo "Motivo do Erro: "    . $helper->getErrorReason()      . "\n";
-			echo "Descrição do Erro: " . $helper->getErrorDescription() . "\n";
-		}
-		else{
+			$msg = "Erro: {$helper->getError()} \n";
+			$msg.= "Código do Erro: {$helper->getErrorCode()} \n";
+			$msg.= "Motivo do Erro: {$helper->getErrorReason()} \n";
+			$msg.= "Descrição do Erro: {$helper->getErrorDescription()} \n";
+		}else{
 			header('HTTP/1.0 400 Bad Request');
-			echo 'Não foi possível gerar os dados corretamente. Requisição Inválida.';
+			$msg = 'Não foi possível gerar os dados corretamente. Requisição Inválida.';
 		}
-		exit;
+		exit($msg);
 	}
 
 	$oAuth2Client  = $fb->getOAuth2Client();
@@ -44,8 +41,7 @@
 		try{
 			$accessToken = $oAuth2Client->getLongLivedAccessToken($accessToken);
 		} catch (Facebook\Exceptions\FacebookSDKException $e) {
-			echo "Erro ao recuperar o acess token: " . $helper->getMessage();
-			exit;
+			die("Erro ao recuperar o acess token: {$helper->getMessage()}");
 		}
 	}
 
@@ -54,12 +50,9 @@
 	try {
 		$response = $fb->get('/me?fields=name', $accessToken);
 	} catch(Facebook\Exceptions\FacebookResponseException $e) {
-		echo 'O Graph retornou um erro: ' . $e->getMessage();
-		exit;
-	exit;
+		die("O Graph retornou um erro: {$e->getMessage()}");
 	} catch(Facebook\Exceptions\FacebookSDKException $e) {
-		echo 'O SDK do Facebook retornou um erro: ' . $e->getMessage();
-		exit;
+		die("O SDK do Facebook retornou um erro: {$e->getMessage()}");
 	}
 
 	$gn = $response->getGraphNode();
